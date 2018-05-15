@@ -1,0 +1,43 @@
+<?php
+
+namespace BeBrain\Traits;
+
+use Illuminate\Support\Facades\Auth;
+use BeBrain\Item;
+use BeBrain\User;
+use BeBrain\Image;
+use Intervention;
+
+trait ValidateImage {
+
+  public function updateImage($object, $requestImage, $type, $oldFile)
+  {
+
+    if ($requestImage) {
+      /*
+      * If exists, remove old avatar.
+      */
+      if ($object->images()->first()) {
+        $path = public_path('storage/images/uploads/'.$type.'/');
+          if(file_exists($path . $oldFile)) {
+            unlink($path . $oldFile);
+          }
+      }
+
+      // Move new image to the images folder.
+      $image = $requestImage;
+      $filename = $object->id . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+      $path = public_path('storage/images/uploads/'.$type.'/'. $filename);
+      Intervention::make($image)->fit(300, 300)->save($path);
+
+      // Update if value already exists. If not, create a new one.
+      $image = $object->images()->firstOrNew(['order' => 0]);
+      $image->fill(['image' => $filename])->save();
+    }
+
+    $img = 'storage/images/uploads/'.$type.'/'.$object->images->first()->image;
+    return $img;
+  }
+}
+
+?>
