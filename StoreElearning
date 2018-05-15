@@ -1,0 +1,71 @@
+<?php
+
+namespace BeBrain\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreElearning extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'price' => 'required|integer',
+            'name' => 'required|max:65',
+            'subtitle' => 'required|max:115',
+            'categories' => 'required|max:5',
+            'description' => 'required|max:1400',
+            'subject' => 'json_array_max:15|json',
+            'goal' => 'max:1000',
+            'target_audience' => 'max:1000',
+            'video' => array('nullable', 'regex:/(http:\/\/|https:\/\/|)(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/'),
+            'keywords' => 'json_array_max:15|json_array_values_max:30',
+            'image' => 'image|max:2000'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Voer een titel in.',
+            'name.max' => 'De titel mag maximaal :max karakters bevatten.',
+            'price.required' => 'Voer een prijs in.',
+            'price.integer' => 'Voer een getal in.',
+            'subtitle.required' => 'Voer een ondertitel in.',
+            'subtitle.max' => 'De ondertitel mag maximaal :max karakters bevatten.',
+            'categories.required' => 'Een E-learning moet minimaal 1 categorie bevatten.',
+            'categories.max' => 'Een E-learning mag maximaal :max categorieën bevatten.',
+            'description.required' => 'Voer een beschrijving in.',
+            'description.max' => 'De ondertitel mag maximaal :max karakters bevatten.',
+            'subject.max' => 'Een E-learning mag maximaal :max leerdoelen bevatten.',
+            'subject.json' => 'Voer minimaal 1 leerdoel in.',
+            'subject.json_array_max' => 'Een item mag maximaal 15 leerdoelen bevatten.',
+            'goal.max' => 'De doelstelling mag maximaal :max karakters bevatten.',
+            'target_audience.max' => 'De doelgroep mag maximaal :max karakters bevatten.',
+            'video.regex' => 'Voer een youtube of vimeo link in.',
+            'keywords.json_array_max' => 'Een E-learning mag maximaal 15 keywords bevatten.',
+            'keywords.json_array_values_max' => 'Een keyword mag maximaal 30 karakters bevatten.',
+            'image.max' => 'De afbeelding mag maximaal :max kb zijn. ',
+            'image.image' => 'Het geüploade bestand moet een afbeelding zijn.'
+        ];
+    }
+}
