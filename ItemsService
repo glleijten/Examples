@@ -1,0 +1,107 @@
+<?php
+
+namespace BeBrain\Services;
+
+use Illuminate\Support\Facades\Auth;
+use BeBrain\Item;
+use BeBrain\ItemAdditional;
+use BeBrain\ItemOrder;
+use BeBrain\Keyword;
+use BeBrain\Category;
+use BeBrain\Theme;
+use BeBrain\Media;
+use BeBrain\Magazine;
+use BeBrain\User;
+use BeBrain\Competence;
+use BeBrain\Type;
+use BeBrain\Http\Requests\StoreElearning;
+use Illuminate\Http\Request;
+use BeBrain\Traits\ValidateVideo;
+use BeBrain\Traits\ValidateImage;
+use Validator;
+use DB;
+
+class ItemsService
+{
+	use ValidateVideo;
+	use ValidateImage;
+
+  public function update(StoreElearning $request, $id)
+  {
+
+    $item = Item::find($id);
+
+    $item->name = $request->name;
+    $item->description = $request->description;
+    $item->target_audience = $request->target_audience;
+    $item->price = $request->price;
+    $item->goal = $request->goal;
+    $item->save();
+
+    /*
+      Additional info
+    */
+
+    if (isset($request->subtitle)) {
+      $subtitle = $item->additionals()->where('key', 'subtitle')->first();
+      $subtitle->value = $request->subtitle;
+      $subtitle->save();
+    }
+
+    if ($request->has('difficulty')) {
+      $difficulty = $item->additionals()->where('key', 'difficulty')->first();
+      $difficulty->value = $request->difficulty;
+      $difficulty->save();
+    }
+
+    if (isset($request->subject)) {
+      $json = json_decode($request->subject);
+      $itemCompetences = $item->competences()->get();
+
+      if (isset($json)) {
+        foreach ($json as $key => $name) {
+          if (!in_array($name, $itemCompetences->pluck('name')->toArray())) {
+            $competence = Competence::create(['name' => $name]);
+            $item->competences()->attach($competence);
+          }
+        }
+
+        foreach ($itemCompetences as $comp) {
+          if (!in_array($comp->name, $json)) {
+            $competence = Competence::find($comp->id);
+            $item->competences()->detach($comp);
+            $comp->delete();
+          }
+        }
+      }
+    }
+
+
+    //save/update array of keywords
+    if (isset($request->keywords)) {
+      $keywords = json_decode($request->keywords);
+
+      foreach ($keywords as $key => $name) {
+        $keyword = Keyword::firstOrCreate(['name' => $name]);
+        $keywords[$key] = $keyword->id;
+      }
+      $item->keywords()->sync($keywords, true);
+    }
+
+    $this->updateImage($item, $request->file('image'), 'item', $item->images()->first()->image);
+
+
+    if (isset($request->video)) {
+      $oldVideo = $item->media()->first();
+
+      if($oldVideo !== null) {
+        $video = $this->processVideo($request->video);
+        $item->media()->sync($video, true);
+      } else {
+        $video = $this->processVideo($request->video);
+            $item->media()->attach($video);
+      }
+    }
+  }
+}
+?>
