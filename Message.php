@@ -1,8 +1,8 @@
 <?php
 
-namespace BeBrain;
+namespace App;
 
-use BeBrain\User;
+use App\User;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 
