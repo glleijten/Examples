@@ -1,23 +1,23 @@
 <?php
 
-namespace BeBrain\Services;
+namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
-use BeBrain\Item;
-use BeBrain\ItemAdditional;
-use BeBrain\ItemOrder;
-use BeBrain\Keyword;
-use BeBrain\Category;
-use BeBrain\Theme;
-use BeBrain\Media;
-use BeBrain\Magazine;
-use BeBrain\User;
-use BeBrain\Competence;
-use BeBrain\Type;
-use BeBrain\Http\Requests\StoreElearning;
+use App\Item;
+use App\ItemAdditional;
+use App\ItemOrder;
+use App\Keyword;
+use App\Category;
+use App\Theme;
+use App\Media;
+use App\Magazine;
+use App\User;
+use App\Competence;
+use App\Type;
+use App\Http\Requests\StoreElearning;
 use Illuminate\Http\Request;
-use BeBrain\Traits\ValidateVideo;
-use BeBrain\Traits\ValidateImage;
+use App\Traits\ValidateVideo;
+use App\Traits\ValidateImage;
 use Validator;
 use DB;
 
