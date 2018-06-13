@@ -1,12 +1,12 @@
 <?php
 
-namespace BeBrain\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Auth;
-use BeBrain\User;
-use BeBrain\Message;
+use App\User;
+use App\Message;
 use Illuminate\Http\Request;
-use BeBrain\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
 {
@@ -15,7 +15,6 @@ class MessageController extends Controller
     public $recipient;
 
     //Gets subject, body, recipient from request and returns it to the view
-
     public function index(Request $request) {
       $subject = $request->subject;
       $body = $request->body;
@@ -25,10 +24,6 @@ class MessageController extends Controller
            $query->where('id', '=', $id);
        })->get()->toArray();
 
-       //var_dump($users);
-      /*$users = User::select(['id', 'first_name', 'last_name'])
-          ->where('id', '!=', Auth::id())->get()->toArray();
-      */
       return view('messages.index')
           ->with('recipient', $recipient)
           ->with('subject', $subject)
@@ -51,7 +46,6 @@ class MessageController extends Controller
 
 
     //method to send messages to 1 or more recipients
-
     public function sendMessage(Request $request) {
       $subject = $request->subject;
       $body = $request->body;
