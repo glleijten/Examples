@@ -1,0 +1,66 @@
+<?php
+
+namespace BeBrain\Http\Controllers;
+
+use Auth;
+use BeBrain\User;
+use BeBrain\Message;
+use Illuminate\Http\Request;
+use BeBrain\Http\Controllers\Controller;
+
+class MessageController extends Controller
+{
+    public $subject;
+    public $body;
+    public $recipient;
+
+    //Gets subject, body, recipient from request and returns it to the view
+
+    public function index(Request $request) {
+      $subject = $request->subject;
+      $body = $request->body;
+      $recipient = $request->recipient;
+      $id = '3';
+      $users = User::whereHas('items', function ($query) use($id){
+           $query->where('id', '=', $id);
+       })->get()->toArray();
+
+       //var_dump($users);
+      /*$users = User::select(['id', 'first_name', 'last_name'])
+          ->where('id', '!=', Auth::id())->get()->toArray();
+      */
+      return view('messages.index')
+          ->with('recipient', $recipient)
+          ->with('subject', $subject)
+          ->with('body', $body)
+          ->with('users', $users);
+    }
+
+    //show all messages where id is equal to logged in user's id
+    public function show()
+    {
+        return view('messages.show',
+        [
+            'sent' =>
+            $this->message->getMessage('desc', 'sender_id', Auth::id()),
+            'received' =>
+            $this->message->getMessage('desc', 'sender_to_id', Auth::id()),
+        ]);
+    }
+
+
+
+    //method to send messages to 1 or more recipients
+
+    public function sendMessage(Request $request) {
+      $subject = $request->subject;
+      $body = $request->body;
+      $recipient = $request->recipient;
+      $length = count($recipient);
+      //if single recipient is chosen
+      for ($i=0; $i < $length; $i++) {
+        $message = Auth::user()->sendMessageTo($recipient[$i], $subject, $body);
+      }
+      return redirect('messages\show');
+    }
+}
