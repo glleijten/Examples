@@ -1,11 +1,11 @@
 <?php
 
-namespace BeBrain\Traits;
+namespace App\Traits;
 
 use Illuminate\Support\Facades\Auth;
-use BeBrain\Item;
-use BeBrain\User;
-use BeBrain\Image;
+use App\Item;
+use App\User;
+use App\Image;
 use Intervention;
 
 trait ValidateImage {
