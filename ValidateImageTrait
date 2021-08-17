@@ -8,6 +8,8 @@ use App\User;
 use App\Image;
 use Intervention;
 
+//Trait from a Laravel project to validate an image with an existing image.
+
 trait ValidateImage {
 
   public function updateImage($object, $requestImage, $type, $oldFile)
