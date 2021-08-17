@@ -44,7 +44,7 @@ class IndexController extends AbstractController
     {
         $form = $this->createForm(ApodType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $apod = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
