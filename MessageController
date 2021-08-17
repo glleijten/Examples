@@ -43,15 +43,14 @@ class MessageController extends Controller
         ]);
     }
 
-
-
     //method to send messages to 1 or more recipients
-    public function sendMessage(Request $request) {
+    public function sendMessage(Request $request) 
+    {
       $subject = $request->subject;
       $body = $request->body;
       $recipient = $request->recipient;
       $length = count($recipient);
-      //if single recipient is chosen
+      //if single recipient
       for ($i=0; $i < $length; $i++) {
         $message = Auth::user()->sendMessageTo($recipient[$i], $subject, $body);
       }
