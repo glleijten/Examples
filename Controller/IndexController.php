@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Service\ApodService;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
@@ -42,11 +41,11 @@ class IndexController extends AbstractController
     {
         try {
             $response = $this->apodService->getData();
-//            $apod = $this->apodService->create($response);
-//            $this->entityManager->persist($apod);
-//            $this->entityManager->flush();
-        } catch (UniqueConstraintViolationException $exception) {
-            $this->logger->info(sprintf('Apod for date date already exists in database. Skipping.'));
+            $apod = $this->apodService->create($response);
+            $this->entityManager->persist($apod);
+            $this->entityManager->flush();
+        } catch (InvalidArgumentException $e) {
+            $this->logger->info('Apod for date date already exists in database. Skipping.');
         }
 
         return $this->render(
