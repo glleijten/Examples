@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +18,7 @@ class Apod
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
@@ -42,9 +43,9 @@ class Apod
     private $hdUrl;
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -58,7 +59,7 @@ class Apod
     }
 
     /**
-     * @return mixed
+     * @param DateTime
      */
     public function getDate()
     {
@@ -74,9 +75,9 @@ class Apod
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getExplanation()
+    public function getExplanation(): string
     {
         return $this->explanation;
     }
@@ -90,9 +91,9 @@ class Apod
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -106,9 +107,9 @@ class Apod
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getHdUrl()
+    public function getHdUrl(): string
     {
         return $this->hdUrl;
     }
@@ -122,9 +123,9 @@ class Apod
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
