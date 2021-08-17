@@ -96,7 +96,6 @@ class NearEarthObjectsService
 
     /**
      * @param array $date
-     *
      * @return string
      * TODO: create FormType
      */
@@ -153,7 +152,6 @@ class NearEarthObjectsService
 
     /**
      * @param $api
-     *
      * @return string
      */
     public static function constructCacheKey($api): string
