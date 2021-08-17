@@ -15,7 +15,6 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class NearEarthObjectsService
 {
-    //?start_date=START_DATE&end_date=END_DATE&api_key=API_KEY
     const NEOW_FEED = 'https://api.nasa.gov/neo/rest/v1/feed';
     const NEOW = 'neow';
 
