@@ -47,18 +47,19 @@ class NearEarthObjectsService
         $this->key = $key;
         $this->serializer = $serializer;
     }
-//
-//    public function create($response)
-//    {
-//        $neow = new Neow();
-//        $neow->setTitle($response->title);
-//        $neow->setDate($response->date);
-//        $neow->setExplanation($response->explanation);
-//        $neow->setHdUrl($response->hdurl);
-//        $neow->setUrl($response->url);
-//
-//        return $neow;
-//    }
+    
+    /**
+     * @param $response
+     */
+    public function create($response)
+    {
+        $nearEarthObjects = new NearEarthObjects();
+        $nearEarthObjects->setTitle($response->title);
+        $nearEarthObjects->setDate($response->date);
+        $nearEarthObjects->setExplanation($response->explanation);
+        $nearEarthObjects->setHdUrl($response->hdurl);
+        $nearEarthObjects->setUrl($response->url);
+    }
 
     /**
      * @return bool|mixed
@@ -66,58 +67,6 @@ class NearEarthObjectsService
      */
     public function request()
     {
-        /**
-         *  EXAMPLE of request->near_earth_objects
-         *
-         * "2018-12-03": array:6 [▼
-         * 0 => {#443 ▼
-         * +"links": {#444 ▶}
-         * +"id": "3735654"
-         * +"neo_reference_id": "3735654"
-         * +"name": "(2015 XJ1)"
-         * +"nasa_jpl_url": "http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=3735654"
-         * +"absolute_magnitude_h": 23.4
-         * +"estimated_diameter": {#445 ▼
-         * +"kilometers": {#446 ▼
-         * +"estimated_diameter_min": 0.0555334912
-         * +"estimated_diameter_max": 0.1241766613
-         * }
-         * +"meters": {#447 ▼
-         * +"estimated_diameter_min": 55.5334911581
-         * +"estimated_diameter_max": 124.1766612574
-         * }
-         * +"miles": {#448 ▼
-         * +"estimated_diameter_min": 0.0345069009
-         * +"estimated_diameter_max": 0.0771597762
-         * }
-         * +"feet": {#449 ▼
-         * +"estimated_diameter_min": 182.1964991311
-         * +"estimated_diameter_max": 407.4037573197
-         * }
-         * }
-         * +"is_potentially_hazardous_asteroid": false
-         * +"close_approach_data": array:1 [▼
-         * 0 => {#450 ▼
-         * +"close_approach_date": "2018-12-03"
-         * +"epoch_date_close_approach": 1543824000000
-         * +"relative_velocity": {#451 ▼
-         * +"kilometers_per_second": "14.5594553907"
-         * +"kilometers_per_hour": "52414.0394063508"
-         * +"miles_per_hour": "32568.0457633517"
-         * }
-         * +"miss_distance": {#452 ▼
-         * +"astronomical": "0.1642395852"
-         * +"lunar": "63.8891983032"
-         * +"kilometers": "24569892"
-         * +"miles": "15267023"
-         * }
-         * +"orbiting_body": "Earth"
-         * }
-         * ]
-         * +"is_sentry_object": false
-         * }
-         */
-
         $cacheKey = self::constructCacheKey('neow');
 
         try {
@@ -150,7 +99,6 @@ class NearEarthObjectsService
      * @param array $date
      *
      * @return string
-     *
      * TODO: create FormType
      */
     private function resolveParameters($date = [null]): string
@@ -171,7 +119,6 @@ class NearEarthObjectsService
 
     /**
      * @param $response
-     *
      * @return array
      */
     public function normalize($response)
