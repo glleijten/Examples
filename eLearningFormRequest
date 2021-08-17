@@ -4,7 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreElearning extends FormRequest
+// class to handle a form request in Laravel with self defined error message
+// I chose this code as an example, as this the result of a project with 3 junior developers at the time and we were left to our own devices.
+// personally, going back on it I like that I used annotations but not that I did not type hint the methods
+
+class eLearningFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
