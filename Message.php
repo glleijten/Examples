@@ -6,6 +6,8 @@ use App\User;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 
+// example of a simple model class in Laravel used to send messagesd between users
+
 class Message extends Model
 {
     protected $fillable = ['body', 'subject', 'sent_to_id', 'sender_id'];
