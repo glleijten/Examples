@@ -21,6 +21,9 @@ use App\Traits\ValidateImage;
 use Validator;
 use DB;
 
+// I chose this example (even though it has no annotation or anything that I like) because the update() method was a pain to get right
+// and even after it worked, I hated the way how unreadable the code got after the 2nd isset
+
 class ItemsService
 {
 	use ValidateVideo;
@@ -76,7 +79,6 @@ class ItemsService
       }
     }
 
-
     //save/update array of keywords
     if (isset($request->keywords)) {
       $keywords = json_decode($request->keywords);
@@ -93,7 +95,6 @@ class ItemsService
 
     if (isset($request->video)) {
       $oldVideo = $item->media()->first();
-
       if($oldVideo !== null) {
         $video = $this->processVideo($request->video);
         $item->media()->sync($video, true);
@@ -104,4 +105,3 @@ class ItemsService
     }
   }
 }
-?>
