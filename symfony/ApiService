@@ -10,7 +10,7 @@ use GuzzleHttp\Handler\CurlHandler;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 // Service class from a Symfony application to communicate with the NASA API
-// It's from a WIP, please excuse me for any (currently) unused constants.
+// It's from a WIP, please excuse me for any (currently) unused constants as this class is being refactored (didn't follow the SOLID principles at first)
 
 class ApiService
 {
