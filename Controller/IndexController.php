@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Form\ApodType;
 use App\Service\ApodService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends AbstractController
 {
@@ -37,7 +40,29 @@ class IndexController extends AbstractController
     /**
      * @Route("/index", name="index")
      */
-    public function index()
+    public function index(Request $request)
+    {
+        $form = $this->createForm(ApodType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $apod = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($apod);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('task_success');
+        }
+
+        return $this->render('apod/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /*
+     * Method to create API call and store APOD data
+     */
+    public function newApod($response): Response
     {
         try {
             $response = $this->apodService->getData();
@@ -45,7 +70,7 @@ class IndexController extends AbstractController
             $this->entityManager->persist($apod);
             $this->entityManager->flush();
         } catch (InvalidArgumentException $e) {
-            $this->logger->info('Apod for date already exists in database. Skipping.');
+            $this->logger->info(sprintf('Apod for date %d already exists in database. Skipping.', $response->date));
         }
 
         return $this->render(
