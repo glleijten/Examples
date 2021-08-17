@@ -45,7 +45,7 @@ class IndexController extends AbstractController
             $this->entityManager->persist($apod);
             $this->entityManager->flush();
         } catch (InvalidArgumentException $e) {
-            $this->logger->info('Apod for date date already exists in database. Skipping.');
+            $this->logger->info('Apod for date already exists in database. Skipping.');
         }
 
         return $this->render(
