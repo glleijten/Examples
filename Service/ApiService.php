@@ -114,7 +114,7 @@ class ApiService
     /**
      * @return string
      */
-    private function getApiKey()
+    private function getApiKey(): string
     {
         return $this->key;
     }
